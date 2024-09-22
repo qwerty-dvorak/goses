@@ -65,13 +65,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Fprintf(htmlPart, "<html><body><p>This is the HTML part of the message.</p></body></html>\r\n")
+    fmt.Fprintf(htmlPart, `<html><body><p>This is the HTML part of the message.</p><img src="cid:image1"></body></html>`)
+	fmt.Fprintf(htmlPart, "\r\n")
 
-	// Write the PDF attachment
-	imagePart, err := writer.CreatePart(map[string][]string{
+    // Write the image part
+    imagePart, err := writer.CreatePart(map[string][]string{
         "Content-Type":              {"image/png"},
         "Content-Transfer-Encoding": {"base64"},
-        "Content-Disposition":       {"attachment; filename=\"image.png\""},
+        "Content-Disposition":       {"inline; filename=\"image.png\""},
+        "Content-ID":                {"<image1>"},
     })
     if err != nil {
         log.Fatal(err)
