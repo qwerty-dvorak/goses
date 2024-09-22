@@ -7,9 +7,18 @@ import (
 	"mime/multipart"
 	"net/smtp"
 	"os"
+	"html/template"
 )
 
-const content = `<html><body><p>This is the HTML part of the message.</p><img src="cid:image1"></body></html>`
+const tmpl = `<html>
+<head>
+    <title>Hellooo</title>
+</head>
+<body>
+    <p>{{.Message}}</p>
+	<img src="cid:image1">
+</body>
+</html>`
 
 const (
 	FROM     = "adheeshgarg0611@gmail.com"
@@ -67,7 +76,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-    fmt.Fprint(htmlPart, content)
+
+	t, err := template.New("webpage").Parse(tmpl)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data := struct {
+		Message string
+	}{
+		Message: "This is a sample message.",
+	}
+	
+	err = t.Execute(htmlPart, data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Fprintf(htmlPart, "\r\n")
 
     // Write the image part
