@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+const content = `<html><body><p>This is the HTML part of the message.</p><img src="cid:image1"></body></html>`
+
 const (
 	FROM     = "adheeshgarg0611@gmail.com"
 	FROMNAME = "Adheesh Garg"
@@ -65,7 +67,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-    fmt.Fprintf(htmlPart, `<html><body><p>This is the HTML part of the message.</p><img src="cid:image1"></body></html>`)
+    fmt.Fprint(htmlPart, content)
 	fmt.Fprintf(htmlPart, "\r\n")
 
     // Write the image part
